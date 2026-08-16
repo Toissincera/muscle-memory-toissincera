@@ -156,7 +156,12 @@ def _linked_worktree_main_root(root):
     gitdir = m.group(1).strip()
     if not os.path.isabs(gitdir):
         gitdir = os.path.normpath(os.path.join(root, gitdir))
-    parts = gitdir.split(os.sep)
+    # Git for Windows writes gitdir pointers with forward slashes even
+    # though os.sep is backslash on that platform; split on both so the
+    # ".git" segment is found regardless of which slash style is present.
+    # POSIX gitdir pointers already use "/", so this is slash-agnostic
+    # there too -- a strict improvement, not a behavior change.
+    parts = re.split(r"[\\/]+", gitdir)
     if ".git" not in parts:
         return None
     idx = len(parts) - 1 - parts[::-1].index(".git")
