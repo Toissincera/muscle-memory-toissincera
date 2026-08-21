@@ -158,8 +158,8 @@ def check_branch_sanity(text, failures):
     pm = re.search(
         r"plan_name:\s*([a-z0-9-]+)\s*--\s*phase\s*(\d+)\s*of\s*(\d+)", body
     )
-    ib = re.search(r"integration branch:\s*([^\s;]+)", body)
-    pb = re.search(r"phase branch:\s*([^\s;]+)", body)
+    ib = re.search(r"integration branch:\s*([^\s;,]+)", body)
+    pb = re.search(r"phase branch:\s*([^\s;,]+)", body)
 
     if pm is None or ib is None or pb is None:
         failures.append(
