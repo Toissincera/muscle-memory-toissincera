@@ -116,7 +116,13 @@ Every plan document may end with an `## Amendments` section. It is appended
 ONLY by the closing sequence's user-gated document-reconciliation step
 (`harness/procedures/closing_sequence.md`) -- never by direct mid-phase edits;
 that reconciliation step is the sanctioned mutation path past the append-only
-rule. Each phase close that amends the document appends ONE dated entry:
+rule. The same user-gated, dated reconciliation mechanism may ALSO run between
+phases, at the start of a `/write_prompt` invocation, when an in-session
+discussion changed the scope of a phase that has not yet been implemented (per
+`harness/procedures/closing_sequence.md` Step 6 and `commands/write_prompt.md`
+Step 2); "never by direct mid-phase edits" bars unsanctioned edits during active
+phase implementation, not this gated between-phases path. Each phase close that
+amends the document appends ONE dated entry:
 
 ```
 ## Amendments
