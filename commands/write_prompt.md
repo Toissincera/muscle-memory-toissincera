@@ -52,6 +52,16 @@ generation date into it. There is no date-token hand-editing anywhere in this sy
 
 ## Step 2 -- Read the schema, PRD, and plan
 
+If this invocation follows a discussion (earlier in this same session) that changed the
+target phase's scope -- new deliverables, revised complexity, or a contract decision the
+original plan left open -- apply the user-approved, dated plan/PRD amendments FIRST, via
+the reconciliation mechanism defined in `.claude/harness/procedures/closing_sequence.md`
+(Step 6) and the plan/prd schemas, BEFORE reading the plan and PRD below. The
+implementation session that consumes this prompt is a fresh session with no memory of
+that discussion, so the PRD, the plan phase, and the compiled prompt must all read as
+current truth by the time compilation begins; every step after this one compiles against
+the amended text.
+
 Read `.claude/harness/templates/plan_schema.md` -- it defines the phase structure you
 are compiling (Objective / Behavioral Tests / Deliverables / Handoff Artifact /
 Definition of Done / Verification, plus gate conventions).
