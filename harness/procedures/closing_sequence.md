@@ -144,7 +144,14 @@ propose surgical edits:
 
 This reconciliation step is the SANCTIONED mutation path past the append-only
 rule: user-approved amendments with a dated trace are legitimate; silent drift
-is not. Outside this step, PRD/plan files stay unmodifiable mid-phase.
+is not. The SAME user-gated, dated amendment mechanism may ALSO be applied
+between phases, at the start of a `/write_prompt` invocation, when a discussion
+earlier in that session changed the scope of a phase that has not yet been
+implemented -- so the compiled prompt reflects current truth (see
+`write_prompt.md` Step 2; it invokes this mechanism rather than defining its
+own). The "unmodifiable mid-phase" restriction governs a phase that is actively
+being implemented, not the gap between phases; outside those two sanctioned
+paths, PRD/plan files stay unmodifiable mid-phase.
 
 ## Step 7: Commit
 
