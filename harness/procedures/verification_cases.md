@@ -16,6 +16,17 @@ and the interactive steps are expected to self-skip on an already-configured
 target (existing files detected and kept). Future prompts should phrase such
 verification as a dry-run.
 
+General rule -- shared contract / interface extension in a statically typed
+codebase: when a phase widens a shared contract type or interface that other code
+implements or conforms to (the case Step 5 of write_prompt.md tells the prompt
+writer to enumerate every implementer of), the prompt writer MUST add the
+project's build / type-check command to the generated prompt's Automated
+verification subsection -- resolved from the `## Verification` section of
+`.claude/preferences.md`, or emitted as a generic `<build command>` placeholder
+if that file or command is absent. The runtime test suite alone does not catch an
+unmet implementer: a fake, double, or stub that no longer satisfies the widened
+interface surfaces only as a build / type-check break.
+
 ## CASE A -- Phase modifies live server/tool behaviour
 
 (For this project: live server/service/tool paths -- see preferences.md's
