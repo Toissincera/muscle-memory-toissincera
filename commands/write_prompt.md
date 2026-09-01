@@ -221,7 +221,19 @@ find <phase_dirs> -type f \
    handoff file), emit an explicit
    "Explore / programmatic-only -- never Read inline" flag naming that file in
    the generated prompt's section 1, alongside the existing large-source flags.
-5. If the plan's git-strategy section (Step 2) names a DIFFERENT repository or repo
+5. **Shared contract types / interfaces -- enumerate EVERY implementer.** If any
+   Deliverable adds a member (method, field, case) to an existing shared contract
+   type or interface that other code implements or conforms to, grep the touched
+   trees for every implementer of that contract -- production code AND every
+   hand-written test fake / double / stub that declares itself as that type -- and
+   list them ALL in the generated prompt (section 1 reference-files block and/or
+   section 3) as files that MUST be updated in the same change, not only the
+   production implementation. (In statically typed languages an unmet implementer
+   surfaces as a build / type-check break, which the runtime test runner alone does
+   not catch; the implementor otherwise discovers the fakes only via the compile
+   error.) Grep both the declared-type form (e.g. a type annotation naming the
+   contract) and any explicit "implements"/"conforms" form.
+6. If the plan's git-strategy section (Step 2) names a DIFFERENT repository or repo
    location than the project repo -- e.g. a harness plan whose deliverables all live in
    the nested repo at `.claude/`, which the project repo gitignores -- resolve THAT
    repo's branches live too: its currently checked-out branch
