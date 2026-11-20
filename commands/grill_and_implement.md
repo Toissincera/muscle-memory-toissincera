@@ -233,7 +233,7 @@ protected-branch invariant of `harness/procedures/git_strategy.md` holds identic
 
 **Standalone:**
 
-1. Cut ONE short-lived branch `quick/<slug>` from the default branch.
+1. Cut ONE branch `quick/<slug>` (kept afterwards, never deleted) from the default branch.
 2. Implement the brief in-session; commit on that branch (conventional messages, no AI
    attribution -- ever). Verify per the brief's outline and report results plainly.
 3. Confirm the ACTIVE gh account owns the target repo (`gh auth status`) and switch to
@@ -256,13 +256,12 @@ protected-branch invariant of `harness/procedures/git_strategy.md` holds identic
    law).
 3. Close by merging into `integration/<plan_name>` and stop there: push the session
    branch, merge with git defaults and an explicit `-m "merge: ..."` message, push
-   integration, delete the session branch remote and local with `git branch -d` (never
-   `-D`).
+   integration, then KEEP the session branch, local and remote -- branches are never deleted (`retain_phase_branches: true`); a branch is deleted only when the user explicitly asks, every single time.
 4. **Open NO pull request.** Only the PLAN opens a PR, once, at the end, and the
    orchestrator does it. If every session opened its own PR the protected branch would be
    flooded and the integration branch would stop being the plan's single accumulation
    point. The zero-commit rule applies unchanged: a session branch with no commits skips
-   push/merge/delete and says so plainly.
+   push/merge and says so plainly.
 
 ## Step 5 -- Close
 

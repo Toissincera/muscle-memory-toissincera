@@ -316,8 +316,9 @@ block.
   protected branch is never touched by Claude.
 - **Autonomous phase-level git** (no confirmation): push the phase branch, merge into
   integration with git defaults and an explicit `-m "merge: ..."` message, push
-  integration, delete the phase branch (remote + local, `-d`). A phase branch with
-  zero commits skips push/merge/delete and reports "no tracked changes this phase".
+  integration, and KEEP the phase branch (local + remote) -- branches are never
+  deleted unless you explicitly ask. A phase branch with
+  zero commits skips push/merge and reports "no tracked changes this phase".
 - **Plan-end PR, merged by YOU.** At the final phase Claude pushes the integration
   branch and opens a pull request with `gh pr create` (autonomous; no AI attribution
   in the PR title/body). You merge it in-session with a `!`-prefixed command -- the
@@ -328,7 +329,7 @@ block.
   ```
 
   Merge defaults come from the `merge_style` / `retain_integration_branch` preference
-  keys (merge-commit; integration branch kept -- deletion is per-plan opt-in).
+  keys (merge-commit; integration branch kept, never deleted unless you ask).
   Post-PR review fixes are committed directly on the integration branch and pushed;
   the open PR tracks them.
 

@@ -54,7 +54,7 @@ branch rules for orchestrated work.
 - **No `permanent/` family.** A `permanent/<plan_name>` branch is NOT part of
   this model. With `retain_integration_branch: true` the integration branch
   already survives the plan, so the distinction `permanent/` would draw does
-  not exist. (The standalone quick lane's own short-lived `quick/<slug>` branch
+  not exist. (The standalone quick lane's own `quick/<slug>` branch (also kept, never deleted)
   is a separate thing entirely -- it belongs to no plan and has no integration
   branch; nothing in this section applies to it.)
 
@@ -102,10 +102,10 @@ The same four steps run for a phase and for an orchestrated session; read
 4. Autonomous close: push the work-unit branch -> merge it into the integration
    branch with git defaults and an explicit message
    (`git merge <work-unit-branch> -m "merge: ..."`) -> push integration ->
-   delete the work-unit branch, remote and local (`git branch -d`, never `-D`).
+   KEEP the work-unit branch, local and remote -- branches are never deleted (`retain_phase_branches: true`); a branch is deleted only when the user explicitly asks, every single time.
 
 **Zero-commit rule:** a work unit whose branch ends with zero commits skips
-push/merge/delete entirely and reports "no tracked changes this phase"
+push/merge entirely and reports "no tracked changes this phase"
 plainly, naming why (e.g. all deliverables were config-only or gitignored).
 
 ## Plan-end PR flow
@@ -126,7 +126,8 @@ At the final phase, after the last phase branch has merged into integration:
    the integration branch and the open PR as the durable artifacts.
 3. **Merge defaults** (preference keys): `merge_style: merge-commit`
    (`gh pr merge --merge`) and `retain_integration_branch: true` -- the
-   integration branch is kept after the merge; deletion is per-plan opt-in.
+   integration branch is kept after the merge and never deleted unless the
+   user explicitly asks.
 
 **Plan-level opt-out (removal direction only).** If the plan's own git-strategy
 section explicitly states a no-PR exception (e.g. "PLAN-SPECIFIC EXCEPTION to

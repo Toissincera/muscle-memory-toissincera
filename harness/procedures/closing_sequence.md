@@ -189,7 +189,7 @@ for the project repo and the nested path otherwise. The bare `git checkout` /
 directory happens to be in, which for a nested-repo plan is the wrong one.
 
 **Zero-commit rule:** if the phase branch has zero commits, skip
-push/merge/delete entirely and report "no tracked changes this phase" plainly,
+push/merge entirely and report "no tracked changes this phase" plainly,
 then confirm the session ends on the expected branch
 (`git branch --show-current`).
 
@@ -201,8 +201,7 @@ of commands for manual execution:
    defaults and an explicit message:
    `git -C <repo> merge <phase-branch> -m "merge: <plan_name> phase <N> -- <brief description>"`.
 3. Push the integration branch: `git -C <repo> push origin integration/<plan_name>`.
-4. Delete the phase branch, remote and local
-   (`git -C <repo> branch -d`, never `-D`).
+4. KEEP the phase branch, local and remote -- branches are never deleted (`retain_phase_branches: true`); a branch is deleted only when the user explicitly asks, every single time.
 
 Report each operation's outcome (hashes, branch states) to the user.
 
@@ -229,7 +228,7 @@ silence and never assumed from a plan's tone or scope (absent an explicit,
 quoted plan statement the standard PR flow applies), and it never authorizes any
 Claude-run path to the protected branch -- no standby/manual-merge handover, no
 Claude-run merge or push to the protected branch, ever. Everything else in this
-step -- the phase push, the merge into integration, the branch delete, and the
+step -- the phase push, the merge into integration, the branch retention, and the
 zero-commit rule -- is unchanged.
 
 ## Step 9: Next phase

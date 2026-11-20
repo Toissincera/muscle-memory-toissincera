@@ -102,7 +102,7 @@ Read `.claude/harness/procedures/git_strategy.md` and the key block of
   prohibition above stands unchanged in every case -- no plan may reintroduce a
   standby/manual-merge handover or ANY Claude-run path to the protected branch.
 - State the zero-commit rule in the resolved block: a phase branch that ends with
-  zero commits skips push/merge/delete and reports "no tracked changes this phase"
+  zero commits skips push/merge and reports "no tracked changes this phase"
   (git_strategy.md).
 - **Resolve the FILENAME of every new artifact a LATER phase must reference by
   name.** Read this phase's `### Handoff Artifact` and the `### Deliverables` of
@@ -157,8 +157,9 @@ Deliverables (from Step 2), then inject the survivors verbatim:
 - Preserve surviving bullet wording verbatim, including the trailing `(PN)`
   origin stamps -- do not paraphrase, shorten, or restructure. Filtering is
   inclusion/exclusion only.
-- Keep the ledger's theme headers for the surviving bullets; drop a header
-  whose bullets were all filtered out. Do not add commentary or summaries.
+- Keep the ledger's theme headers for the surviving bullets, but adjust number 
+  of # hashtags for hierarchy; drop a header whose bullets were all filtered out. 
+  Do not add commentary or summaries.
 - If a bullet is a definitive plan-wide finding (e.g. a field rejected in N/N
   phases tried), include it regardless of the current phase's immediate scope.
 
@@ -411,10 +412,10 @@ Tests-as-deliverables policy: per @.claude/preferences.md (Verification section)
 - plan_name: [plan_name] -- phase [NN] of [total]
 - is_first_phase: [bool] -- is_final_phase: [bool]
 - integration branch: [name]; phase branch: [name]; commit message: "[...]"; merge
-  message: "[...]" (merge with git defaults + explicit -m; delete the phase branch
-  with -d, never -D)
+  message: "[...]" (merge with git defaults + explicit -m; KEEP the phase branch, local and
+  remote -- never delete it unless the user explicitly asks)
 - Zero-commit rule: if the phase branch ends with zero commits, skip
-  push/merge/delete and report "no tracked changes this phase" plainly.
+  push/merge and report "no tracked changes this phase" plainly.
 - New artifacts this phase creates that a LATER phase references by name:
   [concrete paths, or "none"]
 - [Final phase only:] plan-end PR flow: confirm the ACTIVE gh account owns the
