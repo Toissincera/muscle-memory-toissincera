@@ -20,7 +20,8 @@ that happens to exist, not the user saying the work belongs to a plan.
 
 - **No `## Orchestration` block -> STANDALONE.** Behavior is byte-identical to v4.0 of
   this command: parse -> grill -> brief -> go/no-go gate -> `quick/<slug>` branch -> PR,
-  plus the single observations line at close (Step 5). Every instruction below marked
+  plus the single observations line at close (Step 5) -- except in the phase-prompt case
+  below, which swaps only the git flow and close. Every instruction below marked
   ORCHESTRATED ONLY is inert, and nothing in the standalone path depends on a plan, a
   state file, an orchestrator, or a handback. A user who has never seen an orchestrator
   can run this command end to end.
@@ -37,6 +38,20 @@ change to the heading, to a field name, or to that value convention must land in
 files in lockstep -- and in the mentions in `commands/on_board.md` and
 `harness/USER_MANUAL.md` -- because a one-sided rename silently drops a dispatched session
 back into the standalone lane, where it would open a pull request.
+
+**The phase-prompt case (a STANDALONE sub-case, not a third mode).** When a STANDALONE
+task names or @-references a plan phase implementation prompt -- a file at the
+`/write_prompt` output path `docs/prompts/<DDMMYY>/<plan_name>_phase_<NN>_implementation_prompt.md`
+-- read that prompt in full during argument parsing and adopt ITS git flow in place of the
+quick lane's: its phase branch, its resolved git parameters, and its closing sequence
+(`harness/procedures/closing_sequence.md`), as overridden by Step 4 and Step 5 below. Only
+the git flow and close change; the grill (Step 1, cap and AskUserQuestion conduct
+unchanged), the brief (Step 2) and the go/no-go gate (Step 3) all still run. The detection
+contract above is untouched: an `## Orchestration` block still wins whenever present, and
+no new marker is introduced. That output path is OWNED by `commands/write_prompt.md`; a
+change to it there must update this paragraph in lockstep, or a phase prompt silently
+falls back into the quick lane and opens a pull request. Say "standalone (phase prompt)"
+in the mode notice when this case applies.
 
 State the detected mode in a one-line notice before doing anything else, so the user can
 see which lane they are in.
@@ -246,6 +261,16 @@ protected-branch invariant of `harness/procedures/git_strategy.md` holds identic
    approval. Claude never runs `gh pr merge`. If the merge is withheld, the branch and
    open PR are the durable artifacts.
 
+**Standalone (phase prompt)** -- steps 1 and 3-4 above are REPLACED by the phase prompt's
+own resolved git parameters (Step 0's phase-prompt case): work on the phase branch the
+prompt names, cut from or checked out per the prompt, never from the default branch on
+this command's authority; commit per the prompt's commit rules (still no AI attribution);
+close with the prompt's merge into its integration branch and open NO pull request unless
+the prompt itself says the plan's PR opens at this phase. The brief does not double as a
+PR body. A user preference stated in the session (e.g. "do not merge into integration this
+time") overrides the prompt's git close; honor it and say so in the close. The
+no-Claude-path-to-the-protected-branch invariant holds identically.
+
 **ORCHESTRATED ONLY** -- steps 1 and 3-4 above are REPLACED by the per-work-unit flow in
 `harness/procedures/git_strategy.md`, whose work unit here is the dispatched session:
 
@@ -279,6 +304,12 @@ and acting on it is exactly the failure the append-only file exists to avoid.
 
 No phase-closing marker, no learnings file, no ledger entry, no document reconciliation
 -- the brief, the PR and that one appended line are the whole paper trail.
+
+**Standalone (phase prompt):** the paragraph above does NOT apply. Close with the phase
+prompt's closing sequence (`harness/procedures/closing_sequence.md`, with the parameters
+the prompt resolved) end to end -- its phase-closing marker, learnings file and ledger
+steps included -- instead of the observations line, except where a user preference stated
+in the session overrides a git step (Step 4).
 
 **ORCHESTRATED ONLY:** finalize the handback INSTEAD. Advance the stub in place to its
 terminal status -- `PARTIAL`, `ABANDONED` or `COMPLETE` -- and fill the three sections per
