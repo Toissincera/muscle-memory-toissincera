@@ -18,7 +18,7 @@ verification as a dry-run.
 
 General rule -- shared contract / interface extension in a statically typed
 codebase: when a phase widens a shared contract type or interface that other code
-implements or conforms to (the case Step 5 of write_prompt.md tells the prompt
+implements or conforms to (the case Step 6 of write_prompt.md tells the prompt
 writer to enumerate every implementer of), the prompt writer MUST add the
 project's build / type-check command to the generated prompt's Automated
 verification subsection -- resolved from the `## Verification` section of
