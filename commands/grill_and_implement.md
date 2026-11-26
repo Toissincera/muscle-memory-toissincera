@@ -207,6 +207,9 @@ this heading entirely for work with no behavior change.]
 
 ## Implementation outline
 [Numbered steps: files to touch, changes per file, how it will be verified]
+
+## Changes
+[Optional -- one line per mid-implementation implementation-choice swap: what changed, from what to what, user's reason verbatim if given; see Step 4. Omit the heading if none.]
 ```
 
 The `## Behavioral tests` section follows the behavioral-tests law of
