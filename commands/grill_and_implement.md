@@ -302,6 +302,13 @@ and the user's reason in their own words if given. Then carry on.
   the swap contradicts something the phase prompt, plan or PRD pinned, record it as a
   divergence (document, clause, the new choice) so the closing sequence's
   document-reconciliation step picks it up.
+- **ORCHESTRATED ONLY:** the brief is a working document the orchestrator never reads, so
+  each `## Changes` line is also carried into the handback at close (Step 5): by default
+  as an advisory note under `## For the next session`; if the swap contradicts a row the
+  session was told to obey ("Rows this session must obey"), as a `## Delta` row instead
+  -- a `CHANGE` block naming that row's E-ID, pre-formatted per
+  `harness/templates/handback_schema.md`'s marker-block grammar -- so the orchestrator
+  sees it.
 - **Still flag, never silently adopt,** a swap that would break a hard rule or invariant
   (legal/entity rules, git invariants, security constraints) -- only the user may relax
   one of those, explicitly.
