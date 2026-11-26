@@ -54,9 +54,9 @@ Appended ONLY by the closing sequence's user-gated document-reconciliation
 step (`harness/procedures/closing_sequence.md`) -- never by direct mid-phase
 edits; that reconciliation step is the sanctioned mutation path past the
 append-only rule. The same user-gated, dated mechanism may also run between
-phases, at the start of a `/write_prompt` invocation, for a not-yet-implemented
-phase whose scope changed in-session (see `harness/procedures/closing_sequence.md`
-Step 6 and `write_prompt.md` Step 2). Each phase close that amends the PRD appends ONE dated
+phases, during a `/write_prompt` invocation's pre-compilation deliberation step, for any not-yet-implemented
+phase reshaped by in-run or earlier same-session deliberation (see `harness/procedures/closing_sequence.md`
+Step 6 and `write_prompt.md` Step 3). Each phase close that amends the PRD appends ONE dated
 entry (`### YYYY-MM-DD -- phase NN`, then one line per edit naming what
 changed and the superseding decision). Approved amendments edit the body
 surgically AND log the change here, so the requirement text is always
