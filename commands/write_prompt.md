@@ -50,17 +50,7 @@ the generated prompt is resolved at EXECUTION time by the implementation session
 `date +%d%m%y` itself (see the template's closing section) -- never substitute the
 generation date into it. There is no date-token hand-editing anywhere in this system.
 
-## Step 2 -- Read the schema, PRD, and plan
-
-If this invocation follows a discussion (earlier in this same session) that changed the
-target phase's scope -- new deliverables, revised complexity, or a contract decision the
-original plan left open -- apply the user-approved, dated plan/PRD amendments FIRST, via
-the reconciliation mechanism defined in `.claude/harness/procedures/closing_sequence.md`
-(Step 6) and the plan/prd schemas, BEFORE reading the plan and PRD below. The
-implementation session that consumes this prompt is a fresh session with no memory of
-that discussion, so the PRD, the plan phase, and the compiled prompt must all read as
-current truth by the time compilation begins; every step after this one compiles against
-the amended text.
+## Step 2 -- Read the schema, PRD, plan, and ledger
 
 Read `.claude/harness/templates/plan_schema.md` -- it defines the phase structure you
 are compiling (Objective / Behavioral Tests / Deliverables / Handoff Artifact /
@@ -73,7 +63,49 @@ heading or end of file). Count the total number of phases. Note whether the phas
 carries a `### Behavioral Tests` block or gate language, and read the plan's own
 "Git strategy for THIS plan" section.
 
-## Step 3 -- Resolve the git parameters (the two booleans)
+Read the plan's rolling ledger `docs/learnings/<plan_name>_ledger.md` if it exists
+(Step 5 defines how it is filtered; here it is read for deliberation context only).
+Then read enough of the LIVE code the phase will touch -- targeted excerpts, Explore
+for anything large -- to ask informed design questions in Step 3. This is a scoping
+read, not the Step 6 snapshot.
+
+## Step 3 -- Deliberate and amend (before compiling)
+
+The user routinely reshapes a phase DURING this run -- its scope, target, method, and
+key decisions, sometimes massively, and sometimes in ways that touch other phases too.
+Treat that as the expected path, not an exception. Nothing is compiled until this step
+is settled.
+
+1. **Surface what is open.** From the Step 2 reads, list every design decision the
+   target phase's text leaves unpinned (contract shapes, method choices, thresholds,
+   naming, ordering, handoffs), plus any decision already reshaped by discussion
+   earlier in this same session.
+2. **Pin every open decision via batched AskUserQuestion rounds.** Take and defend a
+   position: put the recommended option first and say why. Flag explicitly any option
+   (or any user direction) that conflicts with a PRD requirement, naming the
+   requirement. Expect multiple rounds -- each answer can open new questions, and the
+   user may redirect scope, target, or method entirely; follow the redirect and
+   re-derive the open set. Do NOT proceed to Step 4 while any decision is open.
+3. **Present the amendment set for approval.** Once settled, list every proposed
+   PRD and plan edit -- the target phase AND every other not-yet-implemented phase
+   whose text the decisions touch (handoff artifacts, downstream deliverables,
+   restated values) -- and gate it through AskUserQuestion.
+4. **Apply the approved amendments** via the user-gated, dated reconciliation
+   mechanism defined in `.claude/harness/procedures/closing_sequence.md` (Step 6) and
+   the plan/prd schemas -- body edited surgically AND a dated `## Amendments` entry
+   logged. Do not invent a separate mechanism.
+
+If the user explicitly says there is nothing to discuss, this step may be brief (state
+that no decisions were open or the user waived discussion, and that no amendments were
+made) -- but it is never skipped silently.
+
+Rationale: the implementation session that consumes this prompt is a fresh session with
+no memory of this deliberation, so the PRD, the plan phase, and the compiled prompt must
+all read as current truth by the time compilation begins. Every step after this one
+compiles against the AMENDED text -- re-extract the phase section from the amended plan
+before Step 4.
+
+## Step 4 -- Resolve the git parameters (the two booleans)
 
 Read `.claude/harness/procedures/git_strategy.md` and the key block of
 `.claude/preferences.md`, then resolve:
@@ -134,7 +166,7 @@ Read `.claude/harness/procedures/git_strategy.md` and the key block of
   git-strategy section, and name the retained integration branch as the plan's
   durable artifact. Nothing else in section 9 changes.
 
-## Step 4 -- Accumulated learnings (ledger read, inline filtering)
+## Step 5 -- Accumulated learnings (ledger read, inline filtering)
 
 **Phase 1 short-circuit:** if phase_number == 1, set the learnings section to
 "No prior learnings for this plan yet." and skip this step.
@@ -149,7 +181,7 @@ anything current lives in the ledger.
 "No prior learnings for this plan yet." and continue.
 
 Filter the ledger's bullets IN-CONTEXT against the current phase's Objective and
-Deliverables (from Step 2), then inject the survivors verbatim:
+Deliverables (from Step 2, as amended in Step 3), then inject the survivors verbatim:
 
 - Bias toward INCLUDING a bullet when uncertain. A spurious bullet in a future
   prompt is less harmful than missing a load-bearing constraint. Only drop
@@ -169,7 +201,7 @@ ledger nonetheless plainly contradicts the PRD/plan phase content, that is a
 close-time failure: STOP and surface it per the ambiguity protocol rather than
 silently picking a side.)
 
-## Step 5 -- Codebase snapshot (scoped, live-derived)
+## Step 6 -- Codebase snapshot (scoped, live-derived)
 
 CLAUDE.md's skeletal directory map is ORIENTATION ONLY -- there is no authoritative
 per-file map anywhere to copy from. Derive per-file detail live:
@@ -245,7 +277,7 @@ find <phase_dirs> -type f \
    branch cannot be assumed to match the surrounding project's. Also state plainly in
    the generated prompt's section 3 that this phase's work lands in that nested repo.
 
-## Step 6 -- Select the verification case
+## Step 7 -- Select the verification case
 
 Read `.claude/harness/procedures/verification_cases.md` and the `## Verification`
 section of `.claude/preferences.md`. Select exactly ONE case (A-E) matching the phase,
@@ -257,7 +289,7 @@ command contains an angle-bracket placeholder (e.g. `<memory_dir>`), keep the co
 verbatim and state the resolved concrete value alongside it -- never silently rewrite
 the command.
 
-## Step 7 -- Write the prompt file
+## Step 8 -- Write the prompt file
 
 Create `docs/prompts/<today_ddmmyy>/` if needed and write the output using the template
 below. Fill every [PLACEHOLDER]; emit no bracketed instruction text into the output.
@@ -285,7 +317,7 @@ below. Fill every [PLACEHOLDER]; emit no bracketed instruction text into the out
 from the plan's reference table or the phase scope; one line each: - @path (purpose).
 A `branch:file` path is a git reference -- emit "Read via: git show \"branch:file\"",
 never an @path.]
-[Only if Step 5 flagged large files:]
+[Only if Step 6 flagged large files:]
 Use Explore sub-agent for: [file -- what to extract]. Do not read these inline.
 
 ---
@@ -300,7 +332,7 @@ name a model architecture from template guidance or an older prompt; it goes sta
 
 ## 3. Current Codebase State
 
-[The Step 5 scoped list, one line per file.]
+[The Step 6 scoped list, one line per file.]
 
 For the rest of the repository, see CLAUDE.md's skeletal directory map; derive
 per-file detail on demand via Agent(subagent_type="Explore").
@@ -341,14 +373,14 @@ the whole block entirely if the plan has none.]
 
 ### Automated -- run these and confirm all pass:
 
-[Test-suite command per Step 6, if warranted; then the plan's phase-specific
+[Test-suite command per Step 7, if warranted; then the plan's phase-specific
 verification commands, verbatim.]
 
 Tests-as-deliverables policy: per @.claude/preferences.md (Verification section).
 
 ### Human ([selected case title])
 
-[The ONE resolved case text from Step 6.]
+[The ONE resolved case text from Step 7.]
 
 ---
 
@@ -441,7 +473,7 @@ Tests-as-deliverables policy: per @.claude/preferences.md (Verification section)
 
 ## 10. Accumulated Learnings from Prior Phases
 
-[Step 4's surviving ledger content verbatim -- theme headers plus stamped
+[Step 5's surviving ledger content verbatim -- theme headers plus stamped
 bullets -- or "No prior learnings for this plan yet."]
 
 ---
@@ -471,7 +503,7 @@ verification pointer per @.claude/preferences.md (Verification section).]
 
 ---
 
-## Step 8 -- Validate and confirm
+## Step 9 -- Validate and confirm
 
 Run the deterministic validator from the PROJECT ROOT (its @-reference check
 resolves paths against the current working directory):
@@ -491,11 +523,11 @@ the missing file) and RERUN until it exits green -- never report the prompt done
 with a failing validation.
 
 Then tell the user: the output path; phase N of total; whether the ledger was
-found and how many bullets survived the Step 4 filter; codebase files listed;
+found and how many bullets survived the Step 5 filter; codebase files listed;
 any Explore-delegation flags; the resolved git parameters; the validator
 verdict; and the line count.
 
-## Step 9 -- HITL self-improvement
+## Step 10 -- HITL self-improvement
 
 Review observations about THIS command (`.claude/commands/write_prompt.md`) collected
 while executing it -- template ambiguities, missing constraints, incorrect find
