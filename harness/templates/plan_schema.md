@@ -117,10 +117,11 @@ ONLY by the closing sequence's user-gated document-reconciliation step
 (`harness/procedures/closing_sequence.md`) -- never by direct mid-phase edits;
 that reconciliation step is the sanctioned mutation path past the append-only
 rule. The same user-gated, dated reconciliation mechanism may ALSO run between
-phases, at the start of a `/write_prompt` invocation, when an in-session
-discussion changed the scope of a phase that has not yet been implemented (per
+phases, during a `/write_prompt` invocation's pre-compilation deliberation step,
+when in-run or earlier same-session deliberation reshapes the target phase or any
+other not-yet-implemented phase (per
 `harness/procedures/closing_sequence.md` Step 6 and `commands/write_prompt.md`
-Step 2); "never by direct mid-phase edits" bars unsanctioned edits during active
+Step 3); "never by direct mid-phase edits" bars unsanctioned edits during active
 phase implementation, not this gated between-phases path. Each phase close that
 amends the document appends ONE dated entry:
 
