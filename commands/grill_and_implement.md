@@ -288,6 +288,21 @@ no-Claude-path-to-the-protected-branch invariant holds identically.
    point. The zero-commit rule applies unchanged: a session branch with no commits skips
    push/merge and says so plainly.
 
+**Implementation-choice changes (all modes).** When the user swaps an implementation
+choice mid-implementation (the brief says do X with tool Y; the user says use tool Z),
+adopt it: no re-run of the go/no-go gate and no scope argument -- it is a method change,
+and scope reshaping belongs in `/write_prompt`, not here. Add one line to the brief's
+`## Changes` section (create it at the end if absent): what changed, from what to what,
+and the user's reason in their own words if given. Then carry on.
+
+- **Phase-prompt case:** the same line also goes into the phase learnings at close. If
+  the swap contradicts something the phase prompt, plan or PRD pinned, record it as a
+  divergence (document, clause, the new choice) so the closing sequence's
+  document-reconciliation step picks it up.
+- **Still flag, never silently adopt,** a swap that would break a hard rule or invariant
+  (legal/entity rules, git invariants, security constraints) -- only the user may relax
+  one of those, explicitly.
+
 ## Step 5 -- Close
 
 **Standalone:** append this run's structural observations -- defects in the WORKFLOW
