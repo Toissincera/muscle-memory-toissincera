@@ -43,6 +43,13 @@ is helping.]
 - **No AI attribution in commit messages -- ever.** Never put a model name in a
   subject, body, or trailer; no `Co-Authored-By` AI lines, no "Generated with"
   lines. Write every commit as if authored entirely by the human developer.
+- **Max 3 tool calls per message -- ever.** Clusters of 4+ trip the host's
+  safety classifier and force approvals for the rest of the session. Read,
+  search and edit files with the built-in Read/Grep/Glob/Edit/Write tools, never
+  shell `cat`/`grep`/`head`/`tail`/`Select-String`. Shell only for what has no
+  built-in tool (git, npm, node, gh, tests), one command per call. More than 3
+  lookups go across successive messages or to one Explore sub-agent. Binds
+  every command and every sub-agent brief.
 
 ## Armed pointers (read the target before acting)
 
