@@ -35,7 +35,7 @@ Output file: `docs/jira_and_standup/<exec_ddmmyy>/jira_and_standup_<exec_ddmmyy>
 
 ### Step 2 -- Gather context
 
-Run the following, parallelising where possible.
+Run the following, batching at most 3 calls per message (CLAUDE.md hard constraint).
 
 **2a. Git log on main for the target date (non-merge commits):**
 ```bash
